@@ -24,31 +24,31 @@ public class NotificationserviceApplication {
         return new JsonMessageConverter();
     }
 
-    @Bean
-    DefaultErrorHandler errorHandler(KafkaOperations<String, Object> template) {
-        // 1000L = 1s ,retry 2 time
-        return new DefaultErrorHandler(new DeadLetterPublishingRecoverer(template), new FixedBackOff(1000L, 2));
-    }
+//    @Bean
+//    DefaultErrorHandler errorHandler(KafkaOperations<String, Object> template) {
+//        // 1000L = 1s ,retry 2 time
+//        return new DefaultErrorHandler(new DeadLetterPublishingRecoverer(template), new FixedBackOff(1000L, 2));
+//    }
 
 
-    @RetryableTopic(attempts = "5",dltTopicSuffix = "-dlt", backoff = @Backoff(delay = 2_000,multiplier = 2))
-    public void retryListenMultipleTime(MessageDTO messageDTO) {
-        System.out.println("receive message: ");
-        System.out.println(messageDTO);
-        //if fail  send to retry topic first after then
-        // if retry > 5 they will go
-//        throw new Runtime.....
-
-    }
+//    @RetryableTopic(attempts = "5",dltTopicSuffix = "-dlt", backoff = @Backoff(delay = 2_000,multiplier = 2))
+//    public void retryListenMultipleTime(MessageDTO messageDTO) {
+//        System.out.println("receive message: ");
+//        System.out.println(messageDTO);
+//        //if fail  send to retry topic first after then
+//        // if retry > 5 they will go
+////        throw new Runtime.....
+//
+//    }
 
     @KafkaListener(id = "notificationGroup", topics = "notification")
     public void listen(MessageDTO messageDTO) {
         System.out.println("receive message: ");
         System.out.println(messageDTO);
     }
-    @KafkaListener(id = "dltGroup", topics = "notification.DLT")
-    public void dltListen(MessageDTO messageDTO) {
-        System.out.println("receive message DLT: ");
-        System.out.println(messageDTO);
-    }
+//    @KafkaListener(id = "dltGroup", topics = "notification.DLT")
+//    public void dltListen(MessageDTO messageDTO) {
+//        System.out.println("receive message DLT: ");
+//        System.out.println(messageDTO);
+//    }
 }
